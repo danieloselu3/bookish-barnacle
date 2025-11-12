@@ -6,7 +6,7 @@ BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:5000")
 
 st.set_page_config(page_title="AI Hackathon Intelligence Agent", layout="wide")
 
-st.title("🧠 AI Hackathon Intelligence Orchestrator")
+st.title("🧠 Intelligence Orchestrator")
 st.markdown("Enter a query and let the agent gather, analyze, and summarize intelligence data.")
 
 user_prompt = st.text_area("Your Query:", placeholder="e.g., Analyze recent financial activity trends...")

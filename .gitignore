@@ -9,6 +9,6 @@ __pycache__/
 logs/
 output/
 data/
-
+*.sqlite3
 
 

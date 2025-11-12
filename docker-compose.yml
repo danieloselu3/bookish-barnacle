@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  llm:
+    image: ollama/ollama:latest
+    container_name: llm
+    restart: always
+    volumes:
+      - ollama_models:/root/.ollama
+    ports:
+      - "11434:11434"
+    command: serve
+
+  vectorstore:
+    image: chromadb/chroma:latest
+    container_name: chroma
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./vectorstore:/chroma
+
+  backend:
+    build: ./backend
+    container_name: backend
+    depends_on:
+      - llm
+      - vectorstore
+    environment:
+      - OLLAMA_HOST=http://llm:11434
+      - CHROMA_URL=http://vectorstore:8000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+      - ./vectorstore:/app/vectorstore
+
+  ui:
+    build: ./ui
+    container_name: ui
+    depends_on:
+      - backend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:5000
+
+volumes:
+  ollama_models:
